@@ -1,14 +1,15 @@
 'use client'
-import type { InputRef } from 'antd';
+import { InputRef, Typography } from 'antd';
 import { Button, Card, FloatButton, Form, Input, Popconfirm, Table } from 'antd';
 import type { FormInstance } from 'antd/es/form';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useQuery } from 'react-query';
 import { Project } from '../utils/interfaces';
 import { create, edit, get, remove } from '../utils/api';
-import { AppstoreAddOutlined } from '@ant-design/icons';
+import { AppstoreAddOutlined, DeleteFilled, DeleteOutlined } from '@ant-design/icons';
 import CollectionCreateForm from './form';
 import { useNotification } from '../contexts/notification.context';
+import { useRouter } from 'next/navigation';
 
 const EditableContext = React.createContext<FormInstance<any> | null>(null);
 
@@ -131,6 +132,7 @@ type EditableTableProps = Parameters<typeof Table>[0];
 type ColumnTypes = Exclude<EditableTableProps['columns'], undefined>;
 
 const App: React.FC = () => {
+  const router = useRouter()
   const [dataSource, setDataSource] = useState(Array<Project>);
 
   const { data, error, isLoading, refetch } = useQuery(
@@ -161,19 +163,46 @@ const App: React.FC = () => {
 
   const defaultColumns = [
     {
+      title: "Sl",
+      key: "index",
+      render: (text: string, record: any, index: number) => index + 1,
+      width: "5%",
+      editable: false,
+    },
+    {
       title: 'Title',
       dataIndex: 'title',
-      width: '30%',
+      width: '75%',
       editable: true,
+    },
+    {
+      title: 'Report',
+      dataIndex: 'report',
+      width: '10%',
+      editable: false,
+      render: (_: any, record: Project) => {
+        return dataSource.length >= 1 ? (
+          <>
+          <Typography.Link>
+            Report
+          </Typography.Link>
+          </>
+        ) : <></>
+      }
     },
     {
       title: 'operation',
       dataIndex: 'operation',
       render: (_: any, record: Project) => {
         return dataSource.length >= 1 ? (
+          <span className='flex gap-1'>
           <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record.id)}>
-            <a>Delete</a>
+            <DeleteOutlined style={{color:'red'}}/>
           </Popconfirm>
+          <Typography.Link href={`/project/${record.id}`}>
+            View
+          </Typography.Link>
+          </span>
         ) : <></>
       }
     },
@@ -270,6 +299,11 @@ const App: React.FC = () => {
         bordered
         dataSource={dataSource}
         columns={columns as ColumnTypes}
+        // onRow={(record) => {
+        //   return {
+        //     onClick: (event) => {router.push(`/project/${record.id}`)}, // click row
+        //   };
+        // }}
       />
       </Card>
           <FloatButton

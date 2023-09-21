@@ -2,7 +2,9 @@
 import {
     DesktopOutlined,
     FileOutlined,
+    FileSyncOutlined,
     PieChartOutlined,
+    SmileOutlined,
     TeamOutlined,
     UserOutlined,
   } from '@ant-design/icons';
@@ -36,15 +38,16 @@ import './globals.css'
   }
   
   const items: MenuItem[] = [
-    getItem('Option 1', '1', <PieChartOutlined />),
-    getItem('Option 2', '2', <DesktopOutlined />),
-    getItem('User', 'sub1', <UserOutlined />, [
-      getItem('Tom', '3'),
-      getItem('Bill', '4'),
-      getItem('Alex', '5'),
-    ]),
-    getItem('Team', 'sub2', <TeamOutlined />, [getItem('Team 1', '6'), getItem('Team 2', '8')]),
-    getItem('Files', '9', <FileOutlined />),
+    getItem('Annalyis', '1', <PieChartOutlined />),
+    getItem('Projects', '2', <DesktopOutlined />),
+    // getItem('User', 'sub1', <UserOutlined />, [
+    //   getItem('Tom', '3'),
+    //   getItem('Bill', '4'),
+    //   getItem('Alex', '5'),
+    // ]),
+    getItem('Contribute', '3', <TeamOutlined />),
+    getItem('Methodology', '4', <FileSyncOutlined />),
+    getItem('Sponsor', '5', <SmileOutlined />),
   ];
   
   const App = ({ children }: { children: React.ReactNode }) => {
@@ -58,8 +61,8 @@ import './globals.css'
     const handleMenu = (e:any) => {
       console.log(e);
       
-      if(e === 1) router.push('/project')
-      if(e === 2) router.push('/')
+      if(e == 2) router.push("/project")
+      if(e == 1) router.push('/')
     }
   
     return (

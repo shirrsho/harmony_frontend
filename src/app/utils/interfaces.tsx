@@ -94,4 +94,11 @@ export interface Project {
     id: string;
     key: React.Key;
     title: string;
-  }
+}
+
+export interface Document {
+  id: string;
+  key: React.Key;
+  title: string;
+  project_id: string
+}
