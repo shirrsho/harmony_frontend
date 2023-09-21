@@ -8,6 +8,7 @@ import { Project } from '../utils/interfaces';
 import { create, edit, get, remove } from '../utils/api';
 import { AppstoreAddOutlined } from '@ant-design/icons';
 import CollectionCreateForm from './form';
+import { useNotification } from '../contexts/notification.context';
 
 const EditableContext = React.createContext<FormInstance<any> | null>(null);
 
@@ -234,12 +235,15 @@ const App: React.FC = () => {
   });
 
   const [open, setOpen] = useState(false);
+  const {raiseNotification} = useNotification();
 
   const onCreate = async (values: any) => {
     console.log('Received values of form: ', values);
     try{
       await create(`project`,values)
+      raiseNotification("success","Project successfully added!")
     } catch(e){
+      raiseNotification("error","Project creation failed!")
       console.log("error: ",e);
     }
       // console.log(res);

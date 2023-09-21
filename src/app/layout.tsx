@@ -1,34 +1,109 @@
-import "./globals.css";
+'use client'
+import {
+    DesktopOutlined,
+    FileOutlined,
+    PieChartOutlined,
+    TeamOutlined,
+    UserOutlined,
+  } from '@ant-design/icons';
+  import type { MenuProps } from 'antd';
+  import { Breadcrumb, Layout, Menu, theme } from 'antd';
+import { useState } from 'react';
+import Projects from './page';
+import Title from 'antd/es/typography/Title';
+import { useRouter } from 'next/navigation';
+import Providers from './components/Provider';
+import CustomFooter from './components/Footer';
+import Topbar from './components/topbar';
+import './globals.css'
+  
+  const { Header, Content, Footer, Sider } = Layout;
+  
+  type MenuItem = Required<MenuProps>['items'][number];
+  
+  function getItem(
+    label: React.ReactNode,
+    key: React.Key,
+    icon?: React.ReactNode,
+    children?: MenuItem[],
+  ): MenuItem {
+    return {
+      key,
+      icon,
+      children,
+      label,
+    } as MenuItem;
+  }
+  
+  const items: MenuItem[] = [
+    getItem('Option 1', '1', <PieChartOutlined />),
+    getItem('Option 2', '2', <DesktopOutlined />),
+    getItem('User', 'sub1', <UserOutlined />, [
+      getItem('Tom', '3'),
+      getItem('Bill', '4'),
+      getItem('Alex', '5'),
+    ]),
+    getItem('Team', 'sub2', <TeamOutlined />, [getItem('Team 1', '6'), getItem('Team 2', '8')]),
+    getItem('Files', '9', <FileOutlined />),
+  ];
+  
+  const App = ({ children }: { children: React.ReactNode }) => {
+    const [collapsed, setCollapsed] = useState(false);
+    const {
+      token: { colorPrimary, colorBgContainer },
+    } = theme.useToken();
 
-import { Inter } from "next/font/google";
-// import StyledComponentsRegistry from "./lib/AntdRegistry";
-import { Metadata } from "next";
-import React from "react";
-import { ConfigProvider } from "antd";
-import theme from "./theme/themeConfig";
-import CustomFooter from "./components/Footer";
-import Providers from "./components/Provider";
+    const router = useRouter()
 
-const inter = Inter({ subsets: ["latin"] });
-
-export const metadata: Metadata = {
-  title: "Harmony",
-  description: "Conflict detection in software requirements!",
-};
-
-const RootLayout = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <html lang="en">
-      <body>
-        <ConfigProvider theme={theme}>
-          <Providers>
-          {children}
-          </Providers>
-        <CustomFooter/>
-        </ConfigProvider>
+    const handleMenu = (e:any) => {
+      console.log(e);
+      
+      if(e === 1) router.push('/project')
+      if(e === 2) router.push('/')
+    }
+  
+    return (
+      <html lang="en">
+      <body style={{ maxHeight: '100vh' }}>
+      <Providers>
+      <Layout style={{ minHeight: '100vh' }}>
+      <Topbar />
+        <Sider
+        breakpoint="lg"
+        collapsedWidth="0"
+        collapsible
+        theme="dark"
+        onBreakpoint={(broken) => {
+          console.log(broken);
+        }}
+        color={colorPrimary}
+        onCollapse={(collapsed, type) => {
+          console.log(collapsed, type);
+        }}
+        style={{ marginTop: "1vh", paddingTop:'14vh' }} >
+          {/* <div className="demo-logo-vertical" >Logo</div> */}
+          <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" items={items} onClick={(e)=>handleMenu(e.key)} style={{marginBottom:'45vh'}}/>
+          <CustomFooter/>
+        </Sider>
+        <Layout>
+          <Content style={{ margin: '5vh', paddingTop:'10vh' }}>
+              <Header
+                style={{
+                  padding: 10,
+                  paddingLeft: "30px",
+                  background: colorBgContainer,
+                }}
+              >
+              <Title level={3}>Projects</Title>
+            </Header>
+            {children}
+          </Content>
+        </Layout>
+      </Layout>
+      </Providers>
       </body>
-    </html>
-  );
-};
-
-export default RootLayout;
+      </html>
+    );
+  };
+  
+  export default App;

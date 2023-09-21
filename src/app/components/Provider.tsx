@@ -6,6 +6,7 @@ import { ConfigProvider } from "antd";
 import { QueryClient, QueryClientProvider } from "react-query";
 
 import theme from "../theme/themeConfig";
+import NotificationProvider from "../contexts/notification.context";
 
 
 export default function Providers({ children }: { children: React.ReactNode }) {
@@ -13,7 +14,9 @@ export default function Providers({ children }: { children: React.ReactNode }) {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <NotificationProvider>
         <ConfigProvider theme={theme}>{children}</ConfigProvider>
+      </NotificationProvider>
     </QueryClientProvider>
   );
 }
