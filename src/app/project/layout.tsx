@@ -11,6 +11,8 @@ import {
 import { useState } from 'react';
 import Topbar from '../components/topbar';
 import Projects from './page';
+import Title from 'antd/es/typography/Title';
+import { useRouter } from 'next/navigation';
   
   const { Header, Content, Footer, Sider } = Layout;
   
@@ -47,16 +49,34 @@ import Projects from './page';
     const {
       token: { colorBgContainer },
     } = theme.useToken();
+
+    const router = useRouter()
+
+    const handleMenu = (e:any) => {
+      console.log(e);
+      
+      if(e === 1) router.push('/project')
+      if(e === 2) router.push('/')
+    }
   
     return (
       <Layout style={{ minHeight: '100vh' }}>
       <Topbar />
         <Sider className='pt-24' collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
           <div className="demo-logo-vertical" />
-          <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" items={items} />
+          <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" items={items} onClick={(e)=>handleMenu(e.key)}/>
         </Sider>
         <Layout>
           <Content style={{ margin: '0 16px', paddingTop:'100px' }}>
+              <Header
+            style={{
+              padding: 10,
+              paddingLeft: "30px",
+              background: colorBgContainer,
+            }}
+          >
+            <Title level={3}>Projects</Title>
+          </Header>
             {children}
           </Content>
         </Layout>

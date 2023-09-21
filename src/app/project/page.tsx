@@ -1,6 +1,6 @@
 'use client'
 import type { InputRef } from 'antd';
-import { Button, FloatButton, Form, Input, Popconfirm, Table } from 'antd';
+import { Button, Card, FloatButton, Form, Input, Popconfirm, Table } from 'antd';
 import type { FormInstance } from 'antd/es/form';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useQuery } from 'react-query';
@@ -259,6 +259,7 @@ const App: React.FC = () => {
               setOpen(false);
             }}
           />
+          <Card className="shadow-md">
       <Table
         components={components}
         rowClassName={() => 'editable-row'}
@@ -266,6 +267,7 @@ const App: React.FC = () => {
         dataSource={dataSource}
         columns={columns as ColumnTypes}
       />
+      </Card>
           <FloatButton
             shape="circle"
             type="primary"
@@ -275,6 +277,7 @@ const App: React.FC = () => {
               setOpen(true);
             }}
           />
+          
     </div>
   );
 };

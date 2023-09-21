@@ -13,6 +13,8 @@ export async function get(url:string) {
 }
 
 export async function edit(url:string, new_data:object) {
+    console.log(url, new_data);
+    
     const response = await axios.put(`/${url}`, new_data);
     console.log("editted: ", response.data);
     return response.data;
