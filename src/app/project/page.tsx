@@ -1,12 +1,12 @@
 'use client'
-import { InputRef, Space, TableProps, Tag, Typography } from 'antd';
+import { Breadcrumb, InputRef, Space, TableProps, Tag, Typography } from 'antd';
 import { Button, Card, FloatButton, Form, Input, Popconfirm, Table } from 'antd';
 import type { FormInstance } from 'antd/es/form';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useQuery } from 'react-query';
 import { Project } from '../utils/interfaces';
 import { create, edit, get, remove } from '../utils/api';
-import { AppstoreAddOutlined, DeleteFilled, DeleteOutlined, SearchOutlined } from '@ant-design/icons';
+import { AppstoreAddOutlined, ArrowLeftOutlined, DeleteFilled, DeleteOutlined, HomeOutlined, PlayCircleOutlined, SearchOutlined } from '@ant-design/icons';
 import CollectionCreateForm from './form';
 import { useNotification } from '../contexts/notification.context';
 import { useRouter } from 'next/navigation';
@@ -216,7 +216,7 @@ const App: React.FC = () => {
         return {
           onClick: () => {router.push(`/project/${record.id}`)}, // click row
         };
-      }
+      },
     },
     {
       title: 'Contributor',
@@ -286,13 +286,13 @@ const App: React.FC = () => {
       dataIndex: 'operation',
       render: (_: any, record: Project) => {
         return dataSource.length >= 1 ? (
-          <span className='flex gap-1'>
+          <span className='flex gap-3'>
+          <Popconfirm title="Sure to extract conflcits? Previous customization will be reset!" onConfirm={() => handleDelete(record.id)}>
+            <PlayCircleOutlined  style={{color:'#222E3C'}}/>
+          </Popconfirm>
           <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record.id)}>
             <DeleteOutlined style={{color:'red'}}/>
           </Popconfirm>
-          <Typography.Link href={`/project/${record.id}`}>
-            View
-          </Typography.Link>
           
           </span>
         ) : <></>
@@ -322,6 +322,36 @@ const App: React.FC = () => {
       {/* <Button onClick={handleAdd} type="primary" style={{ marginBottom: 16 }}>
         Add a row
       </Button> */}
+        <Breadcrumb
+          items={[
+            {
+              title: (
+                <span onClick={()=>router.back()} className='hover:cursor-pointer pr-6'>
+                  <ArrowLeftOutlined/>
+                </span>
+              ),
+            },
+            {
+              href: '/project',
+              title: (
+                <>
+                  <HomeOutlined />
+                  <span>Projects</span>
+                </>
+              ),
+            },
+            // {
+            //   href: `/project/${project_id}`,
+            //   title: (
+            //     <>
+            //       <UserOutlined />
+            //       <span>Documents</span>
+            //     </>
+            //   ),
+            // }
+          ]}
+          className='p-6 bg-white'
+        />
         <CollectionCreateForm
             open={open}
             onCreate={onCreate}
@@ -333,7 +363,7 @@ const App: React.FC = () => {
       <Table
         // components={components}
         // rowClassName={() => 'editable-row'}
-        rowClassName={()=>'hover:cursor-pointer'}
+        rowClassName='hover:cursor-pointer'
         bordered
         dataSource={dataSource}
         columns={defaultColumns}

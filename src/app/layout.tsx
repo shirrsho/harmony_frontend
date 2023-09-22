@@ -90,15 +90,6 @@ import './globals.css'
         </Sider>
         <Layout>
           <Content style={{ margin: '5vh', paddingTop:'10vh' }}>
-              <Header
-                style={{
-                  padding: 10,
-                  paddingLeft: "30px",
-                  background: colorBgContainer,
-                }}
-              >
-              <Title level={3}>Projects</Title>
-            </Header>
             {children}
           </Content>
         </Layout>
