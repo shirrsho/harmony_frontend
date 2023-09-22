@@ -91,6 +91,8 @@
 //   }
 
 export interface Project {
+    contributor: any;
+    performance: any;
     id: string;
     key: React.Key;
     title: string;
