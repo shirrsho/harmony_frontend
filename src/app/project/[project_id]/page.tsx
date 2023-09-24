@@ -4,7 +4,7 @@ import { Button, Card, FloatButton, Form, Input, Popconfirm, Table } from 'antd'
 import type { FormInstance } from 'antd/es/form';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useQuery } from 'react-query';
-import { AppstoreAddOutlined, ArrowLeftOutlined, DeleteFilled, DeleteOutlined, HomeOutlined, PlayCircleOutlined, SearchOutlined, UserOutlined } from '@ant-design/icons';
+import { AppstoreAddOutlined, ArrowLeftOutlined, DeleteFilled, DeleteOutlined, FileSyncOutlined, HomeOutlined, PlayCircleOutlined, SearchOutlined, UserOutlined } from '@ant-design/icons';
 import CollectionCreateForm from './form';
 import { useRouter } from 'next/navigation';
 import { ColumnsType, ColumnType, FilterConfirmProps, FilterValue, SorterResult } from 'antd/es/table/interface';
@@ -175,8 +175,8 @@ const App = ({ params } : { params : {project_id:string} }) => {
     setDataSource(data?.map((item: { id: string }) => ({
       ...item,
       key: item.id,
-      performance: 'Good',
-      contributor: 'Shirsho'
+      // performance: 'Good',
+      // contributor: 'Shirsho'
     })))
     console.log(data);
     
@@ -185,9 +185,9 @@ const App = ({ params } : { params : {project_id:string} }) => {
   const handleDelete = async (id: string) => {
     // delete an entry here
       if(await deleteDocument(id)){
-        const newData = dataSource.filter((item) => item.id !== id);    
-        setDataSource(newData);
-      }
+        raiseNotification("success","Document successfully deleted!")
+        refetch()
+      } else raiseNotification("error","Document deletion failed!")
     // delete done
 
   };
@@ -204,7 +204,7 @@ const App = ({ params } : { params : {project_id:string} }) => {
       title: 'Title',
       dataIndex: 'title',
       key:'title',
-      width: '45%',
+      width: '65%',
       // editable: true,
       filters: [
         { text: 'Fooooo', value: 'Fooooo' },
@@ -212,7 +212,7 @@ const App = ({ params } : { params : {project_id:string} }) => {
       ],
       filteredValue: filteredInfo.title || null,
       onFilter: (value: string|number|boolean, record:Document) => record.title?.includes(value.toString()),
-      sorter: (a:any, b:any) => a.title?.length - b.title?.length,
+      sorter: (a:any, b:any) => a?.title?.toLowerCase().localeCompare(b?.title?.toLowerCase()),
       sortOrder: sortedInfo.columnKey === 'title' ? sortedInfo.order : null,
       ...getColumnSearchProps('title'),
       ellipsis: true,
@@ -222,58 +222,58 @@ const App = ({ params } : { params : {project_id:string} }) => {
         };
       },
     },
-    {
-      title: 'Contributor',
-      dataIndex: 'contributor',
-      key:'contributor',
-      width: '15%',
-      // editable: true,
-      filters: [
-        { text: 'Fooooo', value: 'Fooooo' },
-        { text: 'Post', value: 'Post' },
-      ],
-      filteredValue: filteredInfo.title || null,
-      onFilter: (value: string|number|boolean, record:Document) => record.contributor?.includes(value.toString()),
-      // sorter: (a:any, b:any) => a.contributor?.length - b.contributor?.length,
-      // sortOrder: sortedInfo.columnKey === 'contributor' ? sortedInfo.order : null,
-      // ...getColumnSearchProps('contributor'),
-      ellipsis: true,
-      render: (_: any, record: Document) => {
-        return dataSource.length >= 1 ? (
-          <Link href='#'>
-            {record.contributor}
-          </Link>
-        ) : <></>
-      }
-    },
-    {
-      title: 'Performance',
-      dataIndex: 'performance',
-      key:'performance',
-      width: '15%',
-      // editable: true,
-      filters: [
-        { text: 'Good', value: 'Good' },
-        { text: 'Great', value: 'Great' },
-      ],
-      filteredValue: filteredInfo.performance || null,
-      onFilter: (value: string|number|boolean, record:Document) => record.performance?.includes(value.toString()),
-      sorter: (a:any, b:any) => a.performance?.length - b.performance?.length,
-      sortOrder: sortedInfo.columnKey === 'performance' ? sortedInfo.order : null,
-      // ...getColumnSearchProps('performance'),
-      ellipsis: true,
-      render: (_: any, record: Document) => {
-        return dataSource.length >= 1 ? (
-          <Tag>
-            {record.performance}
-          </Tag>
-        ) : <></>
-      }
-    },
+    // {
+    //   title: 'Contributor',
+    //   dataIndex: 'contributor',
+    //   key:'contributor',
+    //   width: '15%',
+    //   // editable: true,
+    //   filters: [
+    //     { text: 'Fooooo', value: 'Fooooo' },
+    //     { text: 'Post', value: 'Post' },
+    //   ],
+    //   filteredValue: filteredInfo.title || null,
+    //   onFilter: (value: string|number|boolean, record:Document) => record.contributor?.includes(value.toString()),
+    //   // sorter: (a:any, b:any) => a.contributor?.length - b.contributor?.length,
+    //   // sortOrder: sortedInfo.columnKey === 'contributor' ? sortedInfo.order : null,
+    //   // ...getColumnSearchProps('contributor'),
+    //   ellipsis: true,
+    //   render: (_: any, record: Document) => {
+    //     return dataSource.length >= 1 ? (
+    //       <Link href='#'>
+    //         {record.contributor}
+    //       </Link>
+    //     ) : <></>
+    //   }
+    // },
+    // {
+    //   title: 'Performance',
+    //   dataIndex: 'performance',
+    //   key:'performance',
+    //   width: '15%',
+    //   // editable: true,
+    //   filters: [
+    //     { text: 'Good', value: 'Good' },
+    //     { text: 'Great', value: 'Great' },
+    //   ],
+    //   filteredValue: filteredInfo.performance || null,
+    //   onFilter: (value: string|number|boolean, record:Document) => record.performance?.includes(value.toString()),
+    //   sorter: (a:any, b:any) => a.performance?.length - b.performance?.length,
+    //   sortOrder: sortedInfo.columnKey === 'performance' ? sortedInfo.order : null,
+    //   // ...getColumnSearchProps('performance'),
+    //   ellipsis: true,
+    //   render: (_: any, record: Document) => {
+    //     return dataSource.length >= 1 ? (
+    //       <Tag>
+    //         {record.performance}
+    //       </Tag>
+    //     ) : <></>
+    //   }
+    // },
     {
       title: 'Report',
       dataIndex: 'report',
-      width: '10%',
+      width: '20%',
       // editable: false,
       render: (_: any, record: Document) => {
         return dataSource.length >= 1 ? (
@@ -350,7 +350,7 @@ const App = ({ params } : { params : {project_id:string} }) => {
               href: `/project/${project_id}`,
               title: (
                 <>
-                  <UserOutlined />
+                  <FileSyncOutlined />
                   <span>Documents</span>
                 </>
               ),

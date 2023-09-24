@@ -172,8 +172,8 @@ const App: React.FC = () => {
     setDataSource(data?.map((item: { id: string }) => ({
       ...item,
       key: item.id,
-      performance: 'Good',
-      contributor: 'Shirsho'
+      // performance: 'Good',
+      // contributor: 'Shirsho'
     })))
     console.log(data);
     
@@ -182,9 +182,9 @@ const App: React.FC = () => {
   const handleDelete = async (id: string) => {
     // delete an entry here
       if(await deleteProject(id)){
-        const newData = dataSource.filter((item) => item.id !== id);    
-        setDataSource(newData);
-      }
+        raiseNotification("success","Project successfully deleted!")
+        refetch()
+      } else raiseNotification("error", "Document deletion failed!")
     // delete done
 
   };
@@ -201,7 +201,7 @@ const App: React.FC = () => {
       title: 'Title',
       dataIndex: 'title',
       key:'title',
-      width: '45%',
+      width: '65%',
       // editable: true,
       filters: [
         { text: 'Fooooo', value: 'Fooooo' },
@@ -209,7 +209,7 @@ const App: React.FC = () => {
       ],
       filteredValue: filteredInfo.title || null,
       onFilter: (value: string|number|boolean, record:Project) => record.title?.includes(value.toString()),
-      sorter: (a:any, b:any) => a.title?.length - b.title?.length,
+      sorter: (a:any, b:any) => a?.title?.toLowerCase().localeCompare(b?.title?.toLowerCase()),
       sortOrder: sortedInfo.columnKey === 'title' ? sortedInfo.order : null,
       ...getColumnSearchProps('title'),
       ellipsis: true,
@@ -219,58 +219,58 @@ const App: React.FC = () => {
         };
       },
     },
-    {
-      title: 'Contributor',
-      dataIndex: 'contributor',
-      key:'contributor',
-      width: '15%',
-      // editable: true,
-      filters: [
-        { text: 'Fooooo', value: 'Fooooo' },
-        { text: 'Post', value: 'Post' },
-      ],
-      filteredValue: filteredInfo.title || null,
-      onFilter: (value: string|number|boolean, record:Project) => record.contributor?.includes(value.toString()),
-      // sorter: (a:any, b:any) => a.contributor?.length - b.contributor?.length,
-      // sortOrder: sortedInfo.columnKey === 'contributor' ? sortedInfo.order : null,
-      // ...getColumnSearchProps('contributor'),
-      ellipsis: true,
-      render: (_: any, record: Project) => {
-        return dataSource.length >= 1 ? (
-          <Link href='#'>
-            {record.contributor}
-          </Link>
-        ) : <></>
-      }
-    },
-    {
-      title: 'Performance',
-      dataIndex: 'performance',
-      key:'performance',
-      width: '15%',
-      // editable: true,
-      filters: [
-        { text: 'Good', value: 'Good' },
-        { text: 'Great', value: 'Great' },
-      ],
-      filteredValue: filteredInfo.performance || null,
-      onFilter: (value: string|number|boolean, record:Project) => record.performance?.includes(value.toString()),
-      sorter: (a:any, b:any) => a.performance?.length - b.performance?.length,
-      sortOrder: sortedInfo.columnKey === 'performance' ? sortedInfo.order : null,
-      // ...getColumnSearchProps('performance'),
-      ellipsis: true,
-      render: (_: any, record: Project) => {
-        return dataSource.length >= 1 ? (
-          <Tag>
-            {record.performance}
-          </Tag>
-        ) : <></>
-      }
-    },
+    // {
+    //   title: 'Contributor',
+    //   dataIndex: 'contributor',
+    //   key:'contributor',
+    //   width: '15%',
+    //   // editable: true,
+    //   filters: [
+    //     { text: 'Fooooo', value: 'Fooooo' },
+    //     { text: 'Post', value: 'Post' },
+    //   ],
+    //   filteredValue: filteredInfo.title || null,
+    //   onFilter: (value: string|number|boolean, record:Project) => record.contributor?.includes(value.toString()),
+    //   // sorter: (a:any, b:any) => a.contributor?.length - b.contributor?.length,
+    //   // sortOrder: sortedInfo.columnKey === 'contributor' ? sortedInfo.order : null,
+    //   // ...getColumnSearchProps('contributor'),
+    //   ellipsis: true,
+    //   render: (_: any, record: Project) => {
+    //     return dataSource.length >= 1 ? (
+    //       <Link href='#'>
+    //         {record.contributor}
+    //       </Link>
+    //     ) : <></>
+    //   }
+    // },
+    // {
+    //   title: 'Performance',
+    //   dataIndex: 'performance',
+    //   key:'performance',
+    //   width: '15%',
+    //   // editable: true,
+    //   filters: [
+    //     { text: 'Good', value: 'Good' },
+    //     { text: 'Great', value: 'Great' },
+    //   ],
+    //   filteredValue: filteredInfo.performance || null,
+    //   onFilter: (value: string|number|boolean, record:Project) => record.performance?.includes(value.toString()),
+    //   sorter: (a:any, b:any) => a.performance?.length - b.performance?.length,
+    //   sortOrder: sortedInfo.columnKey === 'performance' ? sortedInfo.order : null,
+    //   // ...getColumnSearchProps('performance'),
+    //   ellipsis: true,
+    //   render: (_: any, record: Project) => {
+    //     return dataSource.length >= 1 ? (
+    //       <Tag>
+    //         {record.performance}
+    //       </Tag>
+    //     ) : <></>
+    //   }
+    // },
     {
       title: 'Report',
       dataIndex: 'report',
-      width: '10%',
+      width: '20%',
       // editable: false,
       render: (_: any, record: Project) => {
         return dataSource.length >= 1 ? (

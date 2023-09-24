@@ -4,20 +4,20 @@ import { Button, Card, FloatButton, Form, Input, Popconfirm, Table } from 'antd'
 import type { FormInstance } from 'antd/es/form';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useQuery } from 'react-query';
-import { AppstoreAddOutlined, ArrowLeftOutlined, DeleteFilled, DeleteOutlined, HomeOutlined, PlayCircleOutlined, SearchOutlined, UserOutlined } from '@ant-design/icons';
+import { AppstoreAddOutlined, ArrowLeftOutlined, DeleteFilled, DeleteOutlined, FileSyncOutlined, HomeOutlined, PlayCircleOutlined, SearchOutlined, UserOutlined } from '@ant-design/icons';
 import CollectionCreateForm from './form';
 import { useRouter } from 'next/navigation';
 import { ColumnsType, ColumnType, FilterConfirmProps, FilterValue, SorterResult } from 'antd/es/table/interface';
 import Link from 'antd/es/typography/Link';
-import { create, get, remove } from '@/app/utils/api';
+import { create, edit, get, remove } from '@/app/utils/api';
 import { Requirement } from '@/app/utils/interfaces';
 import { useNotification } from '@/app/contexts/notification.context';
 import Loading from '@/app/loading';
 
 
-// async function editProject(document_id:string, row:Project) {
+// async function editRequirement(requirement_id:string, row:any) {
 //   try{
-//     return edit(`project/${document_id}`, {'title':row.title})
+//     return edit(`requirement/${requirement_id}`, {'content':row.content})
 //   } catch(e){
 //     console.log("error: ",e);
 //   }
@@ -176,7 +176,7 @@ const App = ({ params } : { params : {document_id:string, project_id:string} }) 
     setDataSource(data?.map((item: { id: string }) => ({
       ...item,
       key: item.id,
-      performance: 'Good',
+      // performance: 'Good',
       isSafe: true
     })))
     console.log(data);
@@ -188,7 +188,8 @@ const App = ({ params } : { params : {document_id:string, project_id:string} }) 
       if(await deleteRequirement(id)){
         const newData = dataSource.filter((item) => item.id !== id);    
         setDataSource(newData);
-      }
+        raiseNotification("success","Requirement deleted added!")
+      } else raiseNotification("error","Requirement deletion failed!")
     // delete done
 
   };
@@ -205,7 +206,7 @@ const App = ({ params } : { params : {document_id:string, project_id:string} }) 
       title: 'Requirement',
       dataIndex: 'content',
       key:'content',
-      width: '45%',
+      width: '70%',
       // editable: true,
       ...getColumnSearchProps('content'),
       ellipsis: true,
@@ -218,8 +219,14 @@ const App = ({ params } : { params : {document_id:string, project_id:string} }) 
     {
       title: 'Status',
       dataIndex: 'isSafe',
-      width: '10%',
+      width: '15%',
       // editable: false,
+      filters: [
+        { text: 'Safe', value: true },
+        { text: 'Unsafe', value: false },
+      ],
+      filteredValue: filteredInfo.isSafe || null,
+      onFilter: (value: string | number | boolean, record:Requirement) => record?.isSafe == value,
       render: (_: any, record: Requirement) => {
         return record?.isSafe == true ? (
           <Tag>
@@ -256,7 +263,7 @@ const App = ({ params } : { params : {document_id:string, project_id:string} }) 
   const onCreate = async (values: any) => {
     console.log('Received values of form: ', values);
     try{
-      await create(`document`,values)
+      await create(`requirement`,values)
       raiseNotification("success","Requirement successfully added!")
     } catch(e){
       raiseNotification("error","Requirement creation failed!")
@@ -296,7 +303,7 @@ const App = ({ params } : { params : {document_id:string, project_id:string} }) 
               href: `/project/${project_id}`,
               title: (
                 <>
-                  <UserOutlined />
+                  <FileSyncOutlined />
                   <span>Documents</span>
                 </>
               ),
@@ -315,7 +322,8 @@ const App = ({ params } : { params : {document_id:string, project_id:string} }) 
           className='p-6 bg-white'
         />
         <CollectionCreateForm
-            project_id={document_id}
+            project_id={project_id}
+            document_id={document_id}
             open={open}
             onCreate={onCreate}
             onCancel={() => {
