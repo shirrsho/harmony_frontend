@@ -12,6 +12,7 @@ import Link from 'antd/es/typography/Link';
 import { create, get, remove } from '@/app/utils/api';
 import { Document } from '@/app/utils/interfaces';
 import { useNotification } from '@/app/contexts/notification.context';
+import Loading from '@/app/loading';
 
 
 // async function editProject(project_id:string, row:Project) {
@@ -320,7 +321,9 @@ const App = ({ params } : { params : {project_id:string} }) => {
     setOpen(false);
   };
 
-  return (
+  if(isLoading) return <Loading/>
+
+  else return (
     <div>
       {/* <Button onClick={handleAdd} type="primary" style={{ marginBottom: 16 }}>
         Add a row

@@ -99,8 +99,19 @@ export interface Project {
 }
 
 export interface Document {
+  performance: any;
+  contributor: any;
   id: string;
   key: React.Key;
   title: string;
   project_id: string
+}
+
+export interface Requirement {
+  id: string;
+  key: React.Key;
+  document_id: string;
+  project_id: string;
+  content: string;
+  isSafe: boolean;
 }

@@ -12,6 +12,7 @@ import { useNotification } from '../contexts/notification.context';
 import { useRouter } from 'next/navigation';
 import { ColumnsType, ColumnType, FilterConfirmProps, FilterValue, SorterResult } from 'antd/es/table/interface';
 import Link from 'antd/es/typography/Link';
+import Loading from '@/app/loading';
 
 async function fetchProjects() {
   try{
@@ -317,20 +318,22 @@ const App: React.FC = () => {
     setOpen(false);
   };
 
-  return (
+  if(isLoading) return <Loading/>
+
+  else return (
     <div>
       {/* <Button onClick={handleAdd} type="primary" style={{ marginBottom: 16 }}>
         Add a row
       </Button> */}
         <Breadcrumb
           items={[
-            {
-              title: (
-                <span onClick={()=>router.back()} className='hover:cursor-pointer pr-6'>
-                  <ArrowLeftOutlined/>
-                </span>
-              ),
-            },
+            // {
+            //   title: (
+            //     <span onClick={()=>router.back()} className='hover:cursor-pointer pr-6'>
+            //       <ArrowLeftOutlined/>
+            //     </span>
+            //   ),
+            // },
             {
               href: '/project',
               title: (
