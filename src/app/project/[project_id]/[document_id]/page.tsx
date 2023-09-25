@@ -1,5 +1,5 @@
 'use client'
-import { Breadcrumb, Collapse, InputRef, Space, TableProps, Tag, Typography } from 'antd';
+import { Breadcrumb, Collapse, InputRef, Popover, Space, TableProps, Tag, Typography } from 'antd';
 import { Button, Card, FloatButton, Form, Input, Popconfirm, Table } from 'antd';
 import type { FormInstance } from 'antd/es/form';
 import React, { useContext, useEffect, useRef, useState } from 'react';
@@ -13,6 +13,7 @@ import { create, edit, get, remove } from '@/app/utils/api';
 import { Requirement } from '@/app/utils/interfaces';
 import { useNotification } from '@/app/contexts/notification.context';
 import Loading from '@/app/loading';
+import Details from './details';
 
 
 // async function editRequirement(requirement_id:string, row:any) {
@@ -193,12 +194,12 @@ const App = ({ params } : { params : {document_id:string, project_id:string} }) 
     // delete done
 
   };
-
+  const [page, setPage] = React.useState(1);
   const defaultColumns: ColumnsType<Requirement> = [
     {
       title: "Sl",
       key: "index",
-      render: (text: string, record: any, index: number) => index + 1,
+      render: (text: string, record: any, index: number) => index + 1 + (page - 1) * 10,
       width: "5%",
       // editable: false,
     },
@@ -212,9 +213,20 @@ const App = ({ params } : { params : {document_id:string, project_id:string} }) 
       ellipsis: true,
       // onCell: (record:Requirement) => {
       //   return {
-      //     onClick: () => {router.push(`/project/${document_id}/${record.id}`)}, // click row
+      //     onClick: () => {console.log(record.content);
+      //     }, // click row
       //   };
       // },
+      render: (_: any, record: Requirement) => {
+        return (
+          <Popover content={<Details params={{
+            requirement_id: `${record.id}`,
+            content: `${record.content}`
+          }} />} trigger="click">
+          {record.content}
+        </Popover>
+        )
+      }
     },
     {
       title: 'Status',
@@ -339,7 +351,11 @@ const App = ({ params } : { params : {document_id:string, project_id:string} }) 
         dataSource={dataSource}
         columns={defaultColumns}
         onChange={handleChange}
-        
+        pagination={{
+          onChange(current) {
+            setPage(current);
+          }
+        }}
         // onRow={(record) => {
         //   return {
         //     onClick: () => {router.push(`/project/${record.id}`)}, // click row
