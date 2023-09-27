@@ -37,7 +37,7 @@ function Details({params}:{params:{requirement_id:string, content:string}}) {
         form.getFieldValue('content')?editRecord(form.getFieldValue('content')):null
     }} title='Edit' className='hover:cursor-pointer'> */}
         <Popconfirm title="Sure to edit?" onConfirm={() => editRecord(form.getFieldValue('content'))}>
-            <SaveTwoTone size={30} style={{width:'50px', height:'50px'}}/>
+            <SaveTwoTone size={30}/>
           </Popconfirm>
     {/* </div> */}
     </Form.Item>

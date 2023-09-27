@@ -288,9 +288,9 @@ const App: React.FC = () => {
       render: (_: any, record: Project) => {
         return dataSource.length >= 1 ? (
           <span className='flex gap-3'>
-          <Popconfirm title="Sure to extract conflcits? Previous customization will be reset!" onConfirm={() => handleDelete(record.id)}>
-            <PlayCircleOutlined  style={{color:'#222E3C'}}/>
-          </Popconfirm>
+          {/* <Popconfirm title="Sure to extract conflcits? Previous customization will be reset!" onConfirm={() => handleDelete(record.id)}> */}
+            <PlayCircleOutlined  style={{color:'#222E3C'}} onClick={()=>router.push(`/project/${record.id}/conflict`)}/>
+          {/* </Popconfirm> */}
           <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record.id)}>
             <DeleteOutlined style={{color:'red'}}/>
           </Popconfirm>

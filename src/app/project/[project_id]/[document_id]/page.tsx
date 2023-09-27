@@ -141,7 +141,7 @@ const App = ({ params } : { params : {document_id:string, project_id:string} }) 
   const handleChange: TableProps<Requirement>['onChange'] = (pagination, filters, sorter) => {
     console.log('Various parameters', pagination, filters, sorter);
     setFilteredInfo(filters);
-    setSortedInfo(sorter as SorterResult<Requirement>);
+    // setSortedInfo(sorter as SorterResult<Requirement>);
   };
 
   // const clearFilters = () => {
@@ -169,7 +169,7 @@ const App = ({ params } : { params : {document_id:string, project_id:string} }) 
   }
 
   const { data, error, isLoading, refetch } = useQuery(
-    "get_projects",
+    "get_requirements",
     fetchRequirements
   );
 

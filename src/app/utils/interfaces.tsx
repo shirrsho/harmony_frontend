@@ -115,3 +115,16 @@ export interface Requirement {
   content: string;
   isSafe: boolean;
 }
+
+export interface Conflict{
+  req2_content: string;
+  req1_content: string;
+  id: string;
+  key: React.Key;
+  document_id: string;
+  project_id: string;
+  req1_id: string;
+  req2_id: string;
+  cos: 0.272;
+  decision: string;
+}
