@@ -40,6 +40,15 @@ const App = ({ params } : { params : {project_id:string} }) => {
   const [searchedColumn, setSearchedColumn] = useState('');
   const searchInput = useRef<InputRef>(null);
 
+  async function calculateConflict() {
+    try{
+      return create(`conflict/project/${project_id}`,{})
+    } catch(e){
+      console.log("error: ",e);
+      raiseNotification("error", "Some error occured!")
+    }
+  }
+
   const handleSearch = (
     selectedKeys: string[],
     confirm: (param?: FilterConfirmProps) => void,
@@ -389,6 +398,19 @@ const App = ({ params } : { params : {project_id:string} }) => {
             icon={<AppstoreAddOutlined />}
             onClick={() => {
               setOpen(true);
+            }}
+          />
+                    <FloatButton
+            shape="circle"
+            type="primary"
+            style={{ right: 36, bottom: 96 }}
+            icon={<SearchOutlined />}
+            onClick={() => {
+              calculateConflict().then( () => {
+                  raiseNotification("success", "Project Conflict calculation finished!");
+                  router.push(`/project/${project_id}/conflict`);
+                }
+              )
             }}
           />
           

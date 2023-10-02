@@ -121,7 +121,8 @@ export interface Conflict{
   req1_content: string;
   id: string;
   key: React.Key;
-  document_id: string;
+  req1_document_id: string;
+  req2_document_id: string;
   project_id: string;
   req1_id: string;
   req2_id: string;

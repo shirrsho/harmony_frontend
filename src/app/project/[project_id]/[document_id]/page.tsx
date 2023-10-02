@@ -160,6 +160,15 @@ const App = ({ params } : { params : {document_id:string, project_id:string} }) 
   //   });
   // };
 
+  async function calculateConflict() {
+    try{
+      return create(`conflict/document/${document_id}`,{})
+    } catch(e){
+      console.log("error: ",e);
+      raiseNotification("error", "Some error occured!")
+    }
+  }
+
   async function fetchRequirements() {
     try{
       return get(`requirement/document/${document_id}`)
@@ -290,7 +299,7 @@ const App = ({ params } : { params : {document_id:string, project_id:string} }) 
 
   else return (
     <div>
-      {/* <Button onClick={handleAdd} type="primary" style={{ marginBottom: 16 }}>
+      {/* <Button type="primary" style={{ marginBottom: 16 }}>
         Add a row
       </Button> */}
         <Breadcrumb
@@ -370,6 +379,19 @@ const App = ({ params } : { params : {document_id:string, project_id:string} }) 
             icon={<AppstoreAddOutlined />}
             onClick={() => {
               setOpen(true);
+            }}
+          />
+          <FloatButton
+            shape="circle"
+            type="primary"
+            style={{ right: 36, bottom: 96 }}
+            icon={<SearchOutlined />}
+            onClick={() => {
+              calculateConflict().then( () => {
+                  raiseNotification("success", "Conflict calculation finished!");
+                  router.push(`/project/${project_id}/${document_id}/conflict`);
+                }
+              )
             }}
           />
           

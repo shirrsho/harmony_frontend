@@ -40,6 +40,16 @@ async function getRequirement(requirement_id:string) {
   }
 }
 
+async function fetchDocumentName(document_id: string) {
+  try{
+    const data = await get(`document/${document_id}`)
+    return data.title.toString()
+  } catch(e){
+    console.log("error: ",e);
+    return ""
+  }
+}
+
 
 const DocumentConflicts = ({ params } : { params : {project_id:string} }) => {
   const project_id = params.project_id
@@ -227,13 +237,18 @@ const DocumentConflicts = ({ params } : { params : {project_id:string} }) => {
       // },
       render: (_: any, record: Conflict) => {
         return (
+          <>
+          <Typography.Link href={`/project/${record.project_id}/${record.req1_document_id}`}>
+          Go to Doc
+        </Typography.Link>
           <Popover content={<Details params={{
             requirement_id: `${record.id}`,
             // content: `${record.req1_id}`
             content: `${record.req1_content}`
           }} />} trigger="click">
-          {record.req1_id}
+          {"->"} {record.req1_content}
         </Popover>
+        </>
         )
       }
     },
@@ -257,7 +272,10 @@ const DocumentConflicts = ({ params } : { params : {project_id:string} }) => {
                 requirement_id: `${record.id}`,
                 content: `${record.req2_content}`
             }} />} trigger="click">
-            {record.req2_id}
+            <Typography.Link href={`/project/${record.project_id}/${record.req2_document_id}`}>
+              Go to Doc
+            </Typography.Link>
+            {"->"} {record.req2_content}
             </Popover>
             )
         }
