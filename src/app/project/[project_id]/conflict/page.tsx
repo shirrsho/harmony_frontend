@@ -223,11 +223,11 @@ const DocumentConflicts = ({ params } : { params : {project_id:string} }) => {
     },
     {
       title: 'First Req',
-      dataIndex: 'req1_id',
-      key:'req1_id',
+      dataIndex: 'req1_content',
+      key:'req1_content',
       width: '35%',
       // editable: true,
-      ...getColumnSearchProps('req1_id'),
+      ...getColumnSearchProps('req1_content'),
       ellipsis: true,
       // onCell: (record:Requirement) => {
       //   return {
@@ -254,11 +254,11 @@ const DocumentConflicts = ({ params } : { params : {project_id:string} }) => {
     },
     {
         title: 'Second Req',
-        dataIndex: 'req2_id',
-        key:'req2_id',
+        dataIndex: 'req2_content',
+        key:'req2_content',
         width: '35%',
         // editable: true,
-        ...getColumnSearchProps('req2_id'),
+        ...getColumnSearchProps('req2_content'),
         ellipsis: true,
         // onCell: (record:Requirement) => {
         //   return {

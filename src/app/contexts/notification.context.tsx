@@ -9,9 +9,9 @@ import React, {
 
 import { useRouter } from "next/navigation";
 import axios from "../utils/axios";
-import { notification } from "antd";
+import { message, notification } from "antd";
 
-type NotificationType = "success" | "info" | "warning" | "error";
+type NotificationType = "success" | "info" | "warning" | "error" | "loading";
 
 interface NotificationContextType {
 //   user: any; // Replace 'any' with your actual user type
@@ -57,14 +57,23 @@ interface NotificationProviderProps {
 }
 
 const NotificationProvider: React.FC<NotificationProviderProps> = ({ children }) => {
-    const [notificationapi, notificationHolder] = notification.useNotification();
+  //   const [notificationapi, notificationHolder] = notification.useNotification();
 
-  const raiseNotification = async (type: NotificationType, message: string) => {
-    // Simulate a login by setting a mock user object
+  // const raiseNotification = async (type: NotificationType, message: string) => {
+  //   // Simulate a login by setting a mock user object
 
-        notificationapi[type]({
-            message: message
-        });
+  //       notificationapi[type]({
+  //           message: message
+  //       });
+  //   };
+
+  const [notificationapi, notificationHolder] = message.useMessage();
+
+    const raiseNotification = async (type: NotificationType, message: string) => {
+          notificationapi.open({
+            type: type,
+            content: message,
+          });
     };
 
   return (

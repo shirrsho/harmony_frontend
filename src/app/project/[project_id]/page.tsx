@@ -40,9 +40,11 @@ const App = ({ params } : { params : {project_id:string} }) => {
   const [searchedColumn, setSearchedColumn] = useState('');
   const searchInput = useRef<InputRef>(null);
 
-  async function calculateConflict() {
+  function calculateConflict() {
     try{
-      return create(`conflict/project/${project_id}`,{})
+      raiseNotification("loading", "Conflict calculation started!")
+      create(`conflict/project/${project_id}`,{}).then(()=>
+      raiseNotification("success", "Conflict calculation finished!"))
     } catch(e){
       console.log("error: ",e);
       raiseNotification("error", "Some error occured!")
@@ -287,7 +289,7 @@ const App = ({ params } : { params : {project_id:string} }) => {
       render: (_: any, record: Document) => {
         return dataSource.length >= 1 ? (
           <>
-          <Typography.Link>
+          <Typography.Link href={`/project/${project_id}/${record.id}/conflict`}>
             Report
           </Typography.Link>
           </>
@@ -406,11 +408,12 @@ const App = ({ params } : { params : {project_id:string} }) => {
             style={{ right: 36, bottom: 96 }}
             icon={<SearchOutlined />}
             onClick={() => {
-              calculateConflict().then( () => {
-                  raiseNotification("success", "Project Conflict calculation finished!");
-                  router.push(`/project/${project_id}/conflict`);
-                }
-              )
+              calculateConflict()
+            //   .then( () => {
+            //       raiseNotification("success", "Project Conflict calculation finished!");
+            //       router.push(`/project/${project_id}/conflict`);
+            //     }
+            //   )
             }}
           />
           

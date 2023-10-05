@@ -214,11 +214,11 @@ const DocumentConflicts = ({ params } : { params : {document_id:string, project_
     },
     {
       title: 'First Req',
-      dataIndex: 'req1_id',
-      key:'req1_id',
+      dataIndex: 'req1_content',
+      key:'req1_content',
       width: '35%',
       // editable: true,
-      ...getColumnSearchProps('req1_id'),
+      ...getColumnSearchProps('req1_content'),
       ellipsis: true,
       // onCell: (record:Requirement) => {
       //   return {
@@ -233,18 +233,18 @@ const DocumentConflicts = ({ params } : { params : {document_id:string, project_
             // content: `${record.req1_id}`
             content: `${record.req1_content}`
           }} />} trigger="click">
-          {record.req1_id}
+          {record.req1_content}
         </Popover>
         )
       }
     },
     {
         title: 'Second Req',
-        dataIndex: 'req2_id',
-        key:'req2_id',
+        dataIndex: 'req2_content',
+        key:'req2_content',
         width: '35%',
         // editable: true,
-        ...getColumnSearchProps('req2_id'),
+        ...getColumnSearchProps('req2_content'),
         ellipsis: true,
         // onCell: (record:Requirement) => {
         //   return {
@@ -258,7 +258,7 @@ const DocumentConflicts = ({ params } : { params : {document_id:string, project_
                 requirement_id: `${record.id}`,
                 content: `${record.req2_content}`
             }} />} trigger="click">
-            {record.req2_id}
+            {record.req2_content}
             </Popover>
             )
         }
@@ -266,7 +266,7 @@ const DocumentConflicts = ({ params } : { params : {document_id:string, project_
     {
       title: 'Cos',
       dataIndex: 'cos',
-      width: '15%',
+      width: '8%',
       // editable: false,
     //   filters: [
     //     { text: 'Safe', value: true },
@@ -284,6 +284,11 @@ const DocumentConflicts = ({ params } : { params : {document_id:string, project_
     //       At Risk
     //   </Tag>
     //   }
+    },
+    {
+      title: 'Ratio',
+      dataIndex: 'pos_overlap_ratio',
+      width: '8%',
     },
     {
       title: 'Decision',

@@ -126,6 +126,7 @@ export interface Conflict{
   project_id: string;
   req1_id: string;
   req2_id: string;
-  cos: 0.272;
+  cos: number;
+  pos_overlap_ratio: number;
   decision: string;
 }

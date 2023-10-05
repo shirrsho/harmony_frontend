@@ -160,9 +160,11 @@ const App = ({ params } : { params : {document_id:string, project_id:string} }) 
   //   });
   // };
 
-  async function calculateConflict() {
+  function calculateConflict() {
     try{
-      return create(`conflict/document/${document_id}`,{})
+      raiseNotification("loading", "Conflict calculation started!")
+      create(`conflict/document/${document_id}`,{}).then(()=>
+      raiseNotification("success", "Conflict calculation finished!"))
     } catch(e){
       console.log("error: ",e);
       raiseNotification("error", "Some error occured!")
@@ -260,7 +262,7 @@ const App = ({ params } : { params : {document_id:string, project_id:string} }) 
       }
     },
     {
-      title: 'operation',
+      title: 'Operation',
       dataIndex: 'operation',
       render: (_: any, record: Requirement) => {
         return dataSource.length >= 1 ? (
@@ -387,11 +389,12 @@ const App = ({ params } : { params : {document_id:string, project_id:string} }) 
             style={{ right: 36, bottom: 96 }}
             icon={<SearchOutlined />}
             onClick={() => {
-              calculateConflict().then( () => {
-                  raiseNotification("success", "Conflict calculation finished!");
-                  router.push(`/project/${project_id}/${document_id}/conflict`);
-                }
-              )
+              calculateConflict()
+              // .then( () => {
+              //     raiseNotification("success", "Conflict calculation finished!");
+              //     // router.push(`/project/${project_id}/${document_id}/conflict`);
+              //   }
+              // )
             }}
           />
           
