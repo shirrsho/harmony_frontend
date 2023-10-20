@@ -117,6 +117,7 @@ export interface Requirement {
 }
 
 export interface Conflict{
+  opposite_overlap_count: number;
   req2_content: string;
   req1_content: string;
   id: string;

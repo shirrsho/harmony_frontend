@@ -220,6 +220,7 @@ const App = ({ params } : { params : {document_id:string, project_id:string} }) 
       key:'content',
       width: '70%',
       // editable: true,
+      filteredValue: filteredInfo.content || null,
       ...getColumnSearchProps('content'),
       ellipsis: true,
       // onCell: (record:Requirement) => {

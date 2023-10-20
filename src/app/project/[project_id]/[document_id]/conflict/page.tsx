@@ -216,8 +216,9 @@ const DocumentConflicts = ({ params } : { params : {document_id:string, project_
       title: 'First Req',
       dataIndex: 'req1_content',
       key:'req1_content',
-      width: '35%',
+      width: '30%',
       // editable: true,
+      filteredValue: filteredInfo.req1_content || null,
       ...getColumnSearchProps('req1_content'),
       ellipsis: true,
       // onCell: (record:Requirement) => {
@@ -242,8 +243,9 @@ const DocumentConflicts = ({ params } : { params : {document_id:string, project_
         title: 'Second Req',
         dataIndex: 'req2_content',
         key:'req2_content',
-        width: '35%',
+        width: '30%',
         // editable: true,
+        filteredValue: filteredInfo.req2_content || null,
         ...getColumnSearchProps('req2_content'),
         ellipsis: true,
         // onCell: (record:Requirement) => {
@@ -267,6 +269,7 @@ const DocumentConflicts = ({ params } : { params : {document_id:string, project_
       title: 'Cos',
       dataIndex: 'cos',
       width: '8%',
+      filteredValue: filteredInfo.cos || null,
       // editable: false,
     //   filters: [
     //     { text: 'Safe', value: true },
@@ -286,9 +289,20 @@ const DocumentConflicts = ({ params } : { params : {document_id:string, project_
     //   }
     },
     {
-      title: 'Ratio',
+      title: 'Opposites',
+      dataIndex: 'opposite_overlap_count',
+      width: '8%',
+      filters: [
+        { text: 'Non Zeros', value: 0.0 },
+      ],
+      filteredValue: filteredInfo.opposite_overlap_count || null,
+      onFilter: (value: number | string | boolean, record:Conflict) => (+record?.opposite_overlap_count) > value,
+    },
+    {
+      title: 'Pos Ratio',
       dataIndex: 'pos_overlap_ratio',
       width: '8%',
+      filteredValue: filteredInfo.pos_overlap_ratio || null,
     },
     {
       title: 'Decision',
