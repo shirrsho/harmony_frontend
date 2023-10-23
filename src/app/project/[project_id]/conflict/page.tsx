@@ -15,6 +15,7 @@ import { useNotification } from '@/app/contexts/notification.context';
 import Loading from '@/app/loading';
 import Details from './details';
 import { Conflict } from '@/app/utils/interfaces';
+import exportFromJSON from 'export-from-json';
 
 
 // async function editRequirement(requirement_id:string, row:any) {
@@ -314,7 +315,7 @@ const DocumentConflicts = ({ params } : { params : {project_id:string} }) => {
         { text: 'Non Zeros', value: 0.0 },
       ],
       filteredValue: filteredInfo.opposite_overlap_count || null,
-      onFilter: (value: number | string | boolean, record:Conflict) => (+record?.opposite_overlap_count) > value,
+      onFilter: (value: any, record:Conflict) => (+record?.opposite_overlap_count) > value,
     },
     {
       title: 'Pos Ratio',
@@ -330,7 +331,7 @@ const DocumentConflicts = ({ params } : { params : {project_id:string} }) => {
         { text: 'Conflicts', value: "Yes" },
       ],
       filteredValue: filteredInfo.decision || null,
-      onFilter: (value: string | number | boolean, record:Conflict) => record?.decision == value,
+      onFilter: (value: any, record:Conflict) => record?.decision == value,
       render: (_: any, record: Conflict) => {
         return dataSource.length >= 1 ? (
           <span className='flex gap-3'>
@@ -382,6 +383,18 @@ const DocumentConflicts = ({ params } : { params : {project_id:string} }) => {
 //     setOpen(false);
 //   };
 
+const fields = [
+  "req1_content",
+  "req2_content",
+  "Req_2",
+  "cos",
+  "pos_overlap_ratio",
+  "opposite_overlap_count",
+  "decision"
+]
+const fileName = project_id?.toString() + '_report'
+const exportType =  exportFromJSON.types.csv
+
   if(isLoading) return <Loading/>
 
   else return (
@@ -389,6 +402,7 @@ const DocumentConflicts = ({ params } : { params : {project_id:string} }) => {
       {/* <Button onClick={handleAdd} type="primary" style={{ marginBottom: 16 }}>
         Add a row
       </Button> */}
+      <div className='flex p-6 bg-white' style={{alignItems: 'center', justifyContent:'space-between'}}>
         <Breadcrumb
           items={[
             {
@@ -417,8 +431,9 @@ const DocumentConflicts = ({ params } : { params : {project_id:string} }) => {
               ),
             },
           ]}
-          className='p-6 bg-white'
         />
+        <Button onClick={()=>exportFromJSON({ data, fileName, exportType, fields })}>Export</Button>
+        </div>
         {/* <CollectionCreateForm
             project_id={project_id}
             document_id={document_id}
