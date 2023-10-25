@@ -217,7 +217,7 @@ const DocumentConflicts = ({ params } : { params : {document_id:string, project_
       title: 'First Req',
       dataIndex: 'req1_content',
       key:'req1_content',
-      width: '30%',
+      width: '40%',
       // editable: true,
       filteredValue: filteredInfo.req1_content || null,
       ...getColumnSearchProps('req1_content'),
@@ -244,7 +244,7 @@ const DocumentConflicts = ({ params } : { params : {document_id:string, project_
         title: 'Second Req',
         dataIndex: 'req2_content',
         key:'req2_content',
-        width: '30%',
+        width: '40%',
         // editable: true,
         filteredValue: filteredInfo.req2_content || null,
         ...getColumnSearchProps('req2_content'),
@@ -266,48 +266,32 @@ const DocumentConflicts = ({ params } : { params : {document_id:string, project_
             )
         }
     },
-    {
-      title: 'Cos',
-      dataIndex: 'cos',
-      width: '8%',
-      filteredValue: filteredInfo.cos || null,
-      // editable: false,
+    // {
+    //   title: 'Cos',
+    //   dataIndex: 'cos',
+    //   width: '8%',
+    //   filteredValue: filteredInfo.cos || null
+    // },
+    // {
+    //   title: 'Opposites',
+    //   dataIndex: 'opposite_overlap_count',
+    //   width: '8%',
     //   filters: [
-    //     { text: 'Safe', value: true },
-    //     { text: 'Unsafe', value: false },
+    //     { text: 'Non Zeros', value: 0.0 },
     //   ],
-    //   filteredValue: filteredInfo.isSafe || null,
-    //   onFilter: (value: string | number | boolean, record:Conflict) => record?.isSafe == value,
-    //   render: (_: any, record: Conflict) => {
-    //     return record?.isSafe == true ? (
-    //       <Tag>
-    //         Safe
-    //       </Tag>
-    //     ) : 
-    //     <Tag>
-    //       At Risk
-    //   </Tag>
-    //   }
-    },
-    {
-      title: 'Opposites',
-      dataIndex: 'opposite_overlap_count',
-      width: '8%',
-      filters: [
-        { text: 'Non Zeros', value: 0.0 },
-      ],
-      filteredValue: filteredInfo.opposite_overlap_count || null,
-      onFilter: (value: any, record:Conflict) => (+record?.opposite_overlap_count) > value,
-    },
-    {
-      title: 'Pos Ratio',
-      dataIndex: 'pos_overlap_ratio',
-      width: '8%',
-      filteredValue: filteredInfo.pos_overlap_ratio || null,
-    },
+    //   filteredValue: filteredInfo.opposite_overlap_count || null,
+    //   onFilter: (value: any, record:Conflict) => (+record?.opposite_overlap_count) > value,
+    // },
+    // {
+    //   title: 'Pos Ratio',
+    //   dataIndex: 'pos_overlap_ratio',
+    //   width: '8%',
+    //   filteredValue: filteredInfo.pos_overlap_ratio || null,
+    // },
     {
       title: 'Decision',
       dataIndex: 'decision',
+      width:'8%',
       filters: [
         { text: 'Safe', value: "No" },
         { text: 'Conflicts', value: "Yes" },
@@ -321,9 +305,9 @@ const DocumentConflicts = ({ params } : { params : {document_id:string, project_
             <PlayCircleOutlined style={{color:'#222E3C'}}/>
           </Popconfirm> */}
           {record.decision=="Yes"?
-          <Tag color='red'>Conflicts</Tag>
-            :
-          <Tag color='green'>Safe</Tag>}
+          <Tag color='red' onClick={()=>alert("Mark as Safe")} title={"Conflicts! Mark as Safe?"}>Conflicts</Tag>
+          :
+        <Tag color='green' onClick={()=>alert("Mark as Conflicting")} title={"Safe! Mark as Conflicting?"}>Safe</Tag>}
           
           </span>
         ) : <></>
@@ -372,6 +356,12 @@ const DocumentConflicts = ({ params } : { params : {document_id:string, project_
     "cos",
     "pos_overlap_ratio",
     "opposite_overlap_count",
+    'jaccard',
+    'euclidean',
+    'levenshtein',
+    'jensen_shannon',
+    'ngram',
+    'bm25',
     "decision"
   ]
   const fileName = document_id?.toString() + '_report'
