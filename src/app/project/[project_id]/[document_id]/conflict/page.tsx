@@ -204,6 +204,16 @@ const DocumentConflicts = ({ params } : { params : {document_id:string, project_
 
 //   };
 
+  const changeStatus = (conflict_id:string, decision:string) => {
+    try{
+      edit(`conflict/${conflict_id}`,{"decision":decision})
+      raiseNotification("success","Conflict status changed!")
+      refetch()
+    } catch{
+      raiseNotification("error","Conflict status is not changed!")
+    }
+  }
+
   const [page, setPage] = React.useState(1);
   const defaultColumns: ColumnsType<Conflict> = [
     {
@@ -233,6 +243,7 @@ const DocumentConflicts = ({ params } : { params : {document_id:string, project_
           <Popover content={<Details params={{
             requirement_id: `${record.id}`,
             // content: `${record.req1_id}`
+            document_id: `${record?.req1_document_id}`,
             content: `${record.req1_content}`
           }} />} trigger="click">
           {record.req1_content}
@@ -258,8 +269,9 @@ const DocumentConflicts = ({ params } : { params : {document_id:string, project_
         render: (_: any, record: Conflict) => {
             return (
             <Popover content={<Details params={{
-                requirement_id: `${record.id}`,
-                content: `${record.req2_content}`
+                requirement_id: `${record?.id}`,
+                document_id: `${record?.req2_document_id}`,
+                content: `${record?.req2_content}`
             }} />} trigger="click">
             {record.req2_content}
             </Popover>
@@ -305,9 +317,9 @@ const DocumentConflicts = ({ params } : { params : {document_id:string, project_
             <PlayCircleOutlined style={{color:'#222E3C'}}/>
           </Popconfirm> */}
           {record.decision=="Yes"?
-          <Tag color='red' onClick={()=>alert("Mark as Safe")} title={"Conflicts! Mark as Safe?"}>Conflicts</Tag>
-          :
-        <Tag color='green' onClick={()=>alert("Mark as Conflicting")} title={"Safe! Mark as Conflicting?"}>Safe</Tag>}
+          <Tag color='red' onClick={()=>changeStatus(record?.id,"No")} title={"Conflicts! Mark as Safe?"} className="hover:bg-red-800 hover:text-white ease-in-out">Conflicts</Tag>
+            :
+          <Tag color='green' onClick={()=>changeStatus(record?.id,"Yes")} title={"Safe! Mark as Conflicting?"} className="hover:bg-green-800 hover:text-white ease-in-out">Safe</Tag>}
           
           </span>
         ) : <></>

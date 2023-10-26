@@ -2,9 +2,11 @@ import { useNotification } from '@/app/contexts/notification.context';
 import { edit } from '@/app/utils/api'
 import { EditFilled, EditTwoTone, SaveFilled, SaveTwoTone } from '@ant-design/icons'
 import { Button, Form, Input, Popconfirm } from 'antd'
+import Link from 'antd/es/typography/Link';
+import Typography from 'antd/es/typography/Typography';
 import React from 'react'
 
-function Details({params}:{params:{requirement_id:string, content:string}}) {
+function Details({params}:{params:{requirement_id:string, document_id:string, content:string}}) {
     const [form] = Form.useForm();
     const {raiseNotification} = useNotification()
     async function editRecord(content:string){
@@ -23,8 +25,11 @@ function Details({params}:{params:{requirement_id:string, content:string}}) {
     layout="inline"
     name="form_for_reqs"
     initialValues={{ modifier: 'public' }}
-    className='w-[800px] border border-slate-500 rounded-md'
+    className='w-[800px] rounded-md'
   >
+    <Link href={`/document/${params.document_id}`}>
+      <small>Go to Document</small>
+    </Link>
     <Form.Item
       name="content"
       initialValue={params.content}
