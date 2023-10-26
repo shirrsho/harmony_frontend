@@ -250,7 +250,7 @@ const App = ({ params } : { params : {document_id:string, project_id:string} }) 
         { text: 'Unsafe', value: false },
       ],
       filteredValue: filteredInfo.isSafe || null,
-      onFilter: (value: string | number | boolean, record:Requirement) => record?.isSafe == value,
+      onFilter: (value: any, record:Requirement) => record?.isSafe == value,
       render: (_: any, record: Requirement) => {
         return record?.isSafe == true ? (
           <Tag>

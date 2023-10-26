@@ -222,7 +222,7 @@ const App = ({ params } : { params : {project_id:string} }) => {
         { text: 'Post', value: 'Post' },
       ],
       filteredValue: filteredInfo.title || null,
-      onFilter: (value: string|number|boolean, record:Document) => record.title?.includes(value.toString()),
+      onFilter: (value: any, record:Document) => record.title?.includes(value.toString()),
       sorter: (a:any, b:any) => a?.title?.toLowerCase().localeCompare(b?.title?.toLowerCase()),
       sortOrder: sortedInfo.columnKey === 'title' ? sortedInfo.order : null,
       ...getColumnSearchProps('title'),

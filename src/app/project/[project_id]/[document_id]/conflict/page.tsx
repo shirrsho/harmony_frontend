@@ -151,6 +151,7 @@ const DocumentConflicts = ({ params } : { params : {document_id:string, project_
   const handleChange: TableProps<Conflict>['onChange'] = (pagination, filters, sorter) => {
     console.log('Various parameters', pagination, filters, sorter);
     setFilteredInfo(filters);
+    setSortedInfo(sorter as SorterResult<Conflict>);
   };
 
   // const clearFilters = () => {
@@ -231,6 +232,8 @@ const DocumentConflicts = ({ params } : { params : {document_id:string, project_
       // editable: true,
       filteredValue: filteredInfo.req1_content || null,
       ...getColumnSearchProps('req1_content'),
+      sorter: (a:any, b:any) => a?.req1_content?.toLowerCase().localeCompare(b?.req1_content?.toLowerCase()),
+      sortOrder: sortedInfo.columnKey === 'req1_content' ? sortedInfo.order : null,
       ellipsis: true,
       // onCell: (record:Requirement) => {
       //   return {
@@ -259,6 +262,8 @@ const DocumentConflicts = ({ params } : { params : {document_id:string, project_
         // editable: true,
         filteredValue: filteredInfo.req2_content || null,
         ...getColumnSearchProps('req2_content'),
+        sorter: (a:any, b:any) => a?.req2_content?.toLowerCase().localeCompare(b?.req2_content?.toLowerCase()),
+        sortOrder: sortedInfo.columnKey === 'req2_content' ? sortedInfo.order : null,
         ellipsis: true,
         // onCell: (record:Requirement) => {
         //   return {
