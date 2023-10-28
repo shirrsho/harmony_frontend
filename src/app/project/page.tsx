@@ -208,7 +208,7 @@ const App: React.FC = () => {
         { text: 'Post', value: 'Post' },
       ],
       filteredValue: filteredInfo.title || null,
-      onFilter: (value: string|number|boolean, record:Project) => record.title?.includes(value.toString()),
+      onFilter: (value: any, record:Project) => record.title?.includes(value.toString()),
       sorter: (a:any, b:any) => a?.title?.toLowerCase().localeCompare(b?.title?.toLowerCase()),
       sortOrder: sortedInfo.columnKey === 'title' ? sortedInfo.order : null,
       ...getColumnSearchProps('title'),
@@ -307,8 +307,9 @@ const App: React.FC = () => {
   const onCreate = async (values: any) => {
     console.log('Received values of form: ', values);
     try{
-      await create(`project`,values)
+      const res = await create(`project`,values)
       raiseNotification("success","Project successfully added!")
+      router.push(`/project/${res}`)
     } catch(e){
       raiseNotification("error","Project creation failed!")
       console.log("error: ",e);

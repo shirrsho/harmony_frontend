@@ -321,8 +321,9 @@ const App = ({ params } : { params : {project_id:string} }) => {
   const onCreate = async (values: any) => {
     console.log('Received values of form: ', values);
     try{
-      await create(`document`,values)
+      const res = await create(`document`,values)
       raiseNotification("success","Document successfully added!")
+      router.push(`/project/${res}`)
     } catch(e){
       raiseNotification("error","Document creation failed!")
       console.log("error: ",e);

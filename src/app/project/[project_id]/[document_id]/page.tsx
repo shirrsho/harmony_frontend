@@ -305,6 +305,7 @@ const App = ({ params } : { params : {document_id:string, project_id:string} }) 
       {/* <Button type="primary" style={{ marginBottom: 16 }}>
         Add a row
       </Button> */}
+      <div className='flex p-6 bg-white' style={{alignItems: 'center', justifyContent:'space-between'}}>
         <Breadcrumb
           items={[
             {
@@ -343,8 +344,9 @@ const App = ({ params } : { params : {document_id:string, project_id:string} }) 
               ),
             }
           ]}
-          className='p-6 bg-white'
         />
+        <Button onClick={()=>router.push(`/project/${project_id}/${document_id}/conflict`)}>Report</Button>
+        </div>
         <CollectionCreateForm
             project_id={project_id}
             document_id={document_id}
