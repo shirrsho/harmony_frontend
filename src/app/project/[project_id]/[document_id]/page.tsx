@@ -287,14 +287,14 @@ const App = ({ params } : { params : {document_id:string, project_id:string} }) 
   const onCreate = async (values: any) => {
     console.log('Received values of form: ', values);
     try{
-      await create(`requirement`,values)
+      create(`requirement`,values).then(()=>refetch())
       raiseNotification("success","Requirement successfully added!")
     } catch(e){
       raiseNotification("error","Requirement creation failed!")
       console.log("error: ",e);
     }
       // console.log(res);
-      refetch()
+    refetch()
     setOpen(false);
   };
 
@@ -354,6 +354,7 @@ const App = ({ params } : { params : {document_id:string, project_id:string} }) 
             onCreate={onCreate}
             onCancel={() => {
               setOpen(false);
+              refetch()
             }}
           />
           <Card className="shadow-md">

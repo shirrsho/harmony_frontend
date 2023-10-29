@@ -309,14 +309,14 @@ const App: React.FC = () => {
     try{
       const res = await create(`project`,values)
       raiseNotification("success","Project successfully added!")
+      setOpen(false);
       router.push(`/project/${res}`)
     } catch(e){
       raiseNotification("error","Project creation failed!")
       console.log("error: ",e);
     }
       // console.log(res);
-      refetch()
-    setOpen(false);
+      // refetch()
   };
 
   if(isLoading) return <Loading/>

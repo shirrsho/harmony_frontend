@@ -323,14 +323,15 @@ const App = ({ params } : { params : {project_id:string} }) => {
     try{
       const res = await create(`document`,values)
       raiseNotification("success","Document successfully added!")
-      router.push(`/project/${res}`)
+      setOpen(false);
+      router.push(`/project/${project_id}/${res}`)
     } catch(e){
       raiseNotification("error","Document creation failed!")
       console.log("error: ",e);
     }
       // console.log(res);
-      refetch()
-    setOpen(false);
+      // refetch()
+
   };
 
   if(isLoading) return <Loading/>
