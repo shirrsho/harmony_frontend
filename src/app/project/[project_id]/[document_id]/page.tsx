@@ -1,5 +1,5 @@
 'use client'
-import { Breadcrumb, Collapse, InputRef, Modal, Popover, Space, TableProps, Tag, Typography } from 'antd';
+import { Breadcrumb, Collapse, InputRef, Modal, Popover, Space, TableProps, Tag, theme, Typography } from 'antd';
 import { Button, Card, FloatButton, Form, Input, Popconfirm, Table } from 'antd';
 import type { FormInstance } from 'antd/es/form';
 import React, { useContext, useEffect, useRef, useState } from 'react';
@@ -33,6 +33,9 @@ async function deleteRequirement(requirement_id:string) {
 
 
 const App = ({ params } : { params : {document_id:string, project_id:string} }) => {
+  const {
+    token: { colorPrimary, colorBgContainer },
+  } = theme.useToken();
   const document_id = params.document_id
   const project_id = params.project_id
   const router = useRouter()
@@ -273,7 +276,7 @@ const App = ({ params } : { params : {document_id:string, project_id:string} }) 
           {/* <Popconfirm title="Sure to extract conflcits? Previous customization will be reset!" onConfirm={() => handleDelete(record.id)}>
             <PlayCircleOutlined style={{color:'#222E3C'}}/>
           </Popconfirm> */}
-          <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record.id)}>
+          <Popconfirm title="Sure to delete?" okButtonProps={{style:{backgroundColor:colorPrimary}}} onConfirm={() => handleDelete(record.id)}>
             <DeleteOutlined style={{color:'red'}}/>
           </Popconfirm>
           

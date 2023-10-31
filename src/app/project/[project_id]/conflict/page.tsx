@@ -1,5 +1,5 @@
 'use client'
-import { Breadcrumb, Collapse, InputRef, Popover, Space, TableProps, Tag, Typography } from 'antd';
+import { Breadcrumb, Collapse, InputRef, Popover, Space, TableProps, Tag, theme, Typography } from 'antd';
 import { Button, Card, FloatButton, Form, Input, Popconfirm, Table } from 'antd';
 import type { FormInstance } from 'antd/es/form';
 import React, { useContext, useEffect, useRef, useState } from 'react';
@@ -53,6 +53,9 @@ async function fetchDocumentName(document_id: string) {
 
 
 const DocumentConflicts = ({ params } : { params : {project_id:string} }) => {
+  const {
+    token: { colorPrimary, colorBgContainer },
+  } = theme.useToken();
   const project_id = params.project_id
   const router = useRouter()
   const [dataSource, setDataSource] = useState(Array<Conflict>);

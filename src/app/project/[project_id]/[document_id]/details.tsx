@@ -1,10 +1,13 @@
 import { useNotification } from '@/app/contexts/notification.context';
 import { edit } from '@/app/utils/api'
 import { EditFilled, EditTwoTone, SaveFilled, SaveTwoTone } from '@ant-design/icons'
-import { Button, Form, Input, Popconfirm } from 'antd'
+import { Button, Form, Input, Popconfirm, theme } from 'antd'
 import React from 'react'
 
 function Details({params}:{params:{requirement_id:string, content:string}}) {
+    const {
+      token: { colorPrimary, colorBgContainer },
+    } = theme.useToken();
     const [form] = Form.useForm();
     const {raiseNotification} = useNotification()
     async function editRecord(content:string){
@@ -36,7 +39,7 @@ function Details({params}:{params:{requirement_id:string, content:string}}) {
     {/* <div onClick={()=>{
         form.getFieldValue('content')?editRecord(form.getFieldValue('content')):null
     }} title='Edit' className='hover:cursor-pointer'> */}
-        <Popconfirm title="Sure to edit?" onConfirm={() => editRecord(form.getFieldValue('content'))}>
+        <Popconfirm title="Sure to edit?" okButtonProps={{style:{backgroundColor:colorPrimary}}} onConfirm={() => editRecord(form.getFieldValue('content'))}>
             <SaveTwoTone size={30} style={{width:'50px', height:'50px'}}/>
           </Popconfirm>
     {/* </div> */}

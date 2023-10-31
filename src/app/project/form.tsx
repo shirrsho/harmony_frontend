@@ -1,7 +1,7 @@
 'use client'
 import React, { useState } from 'react';
 
-import { Button, Form, Input, Modal, Radio } from 'antd';
+import { Button, Form, Input, Modal, Radio, theme } from 'antd';
 
 interface Values {
   title: string;
@@ -18,6 +18,9 @@ const CollectionCreateForm: React.FC<CollectionCreateFormProps> = ({
   onCreate,
   onCancel,
 }) => {
+  const {
+    token: { colorPrimary, colorBgContainer },
+  } = theme.useToken();
   const [form] = Form.useForm();
   return (
     <Modal
@@ -26,6 +29,7 @@ const CollectionCreateForm: React.FC<CollectionCreateFormProps> = ({
       okText="Create"
       cancelText="Cancel"
       onCancel={onCancel}
+      okButtonProps={{style:{backgroundColor:colorPrimary}}}
       onOk={() => {
         form
           .validateFields()

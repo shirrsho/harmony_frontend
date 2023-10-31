@@ -1,5 +1,5 @@
 'use client'
-import { Breadcrumb, InputRef, Space, TableProps, Tag, Typography } from 'antd';
+import { Breadcrumb, InputRef, Space, TableProps, Tag, theme, Typography } from 'antd';
 import { Button, Card, FloatButton, Form, Input, Popconfirm, Table } from 'antd';
 import type { FormInstance } from 'antd/es/form';
 import React, { useContext, useEffect, useRef, useState } from 'react';
@@ -38,6 +38,9 @@ async function deleteProject(project_id:string) {
 
 
 const App: React.FC = () => {
+  const {
+    token: { colorPrimary, colorBgContainer },
+  } = theme.useToken();
   const router = useRouter()
   const [dataSource, setDataSource] = useState(Array<Project>);
 
@@ -291,7 +294,7 @@ const App: React.FC = () => {
           {/* <Popconfirm title="Sure to extract conflcits? Previous customization will be reset!" onConfirm={() => handleDelete(record.id)}> */}
             {/* <SearchOutlined style={{color:'#222E3C'}} onClick={()=>router.push(`/project/${record.id}/conflict`)}/> */}
           {/* </Popconfirm> */}
-          <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record.id)}>
+          <Popconfirm title="Sure to delete?" okButtonProps={{style:{backgroundColor:colorPrimary}}} onConfirm={() => handleDelete(record.id)}>
             <DeleteOutlined style={{color:'red'}}/>
           </Popconfirm>
           

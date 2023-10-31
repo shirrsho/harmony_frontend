@@ -1,32 +1,35 @@
 import { useNotification } from '@/app/contexts/notification.context';
 import { edit } from '@/app/utils/api'
 import { EditFilled, EditTwoTone, SaveFilled, SaveTwoTone } from '@ant-design/icons'
-import { Button, Form, Input, Popconfirm } from 'antd'
+import { Button, Form, Input, Popconfirm, theme } from 'antd'
 import Link from 'antd/es/typography/Link';
 import Typography from 'antd/es/typography/Typography';
 import React from 'react'
 
 function Details({params}:{params:{requirement_id:string, document_id:string, content:string}}) {
+    const {
+      token: { colorPrimary, colorBgContainer },
+    } = theme.useToken();
     const [form] = Form.useForm();
     const {raiseNotification} = useNotification()
     async function editRecord(content:string){
-        console.log(content);
-        
-        try{
-            await edit(`requirement/${params.requirement_id}`, {'content':content})
-            raiseNotification("success","Requirement editted successfully!")
-        } catch{
-            raiseNotification("error","Requirement editing failed!")
-        }
+      console.log(content);
+      
+      try{
+        await edit(`requirement/${params.requirement_id}`, {'content':content})
+        raiseNotification("success","Requirement editted successfully!")
+      } catch{
+        raiseNotification("error","Requirement editing failed!")
+      }
     }
-  return (
-    <Form
-    form={form}
-    layout="inline"
-    name="form_for_reqs"
-    initialValues={{ modifier: 'public' }}
-    className='w-[800px] rounded-md'
-  >
+    return (
+      <Form
+      form={form}
+      layout="inline"
+      name="form_for_reqs"
+      initialValues={{ modifier: 'public' }}
+      className='w-[800px] rounded-md'
+      >
     <Link href={`/document/${params.document_id}`}>
       <small>Go to Document</small>
     </Link>
@@ -34,14 +37,15 @@ function Details({params}:{params:{requirement_id:string, document_id:string, co
       name="content"
       initialValue={params.content}
       className='w-[750px]'
-    >
+      >
       <Input.TextArea rows={2}/>
     </Form.Item>
     <Form.Item>
     {/* <div onClick={()=>{
-        form.getFieldValue('content')?editRecord(form.getFieldValue('content')):null
+      form.getFieldValue('content')?editRecord(form.getFieldValue('content')):null
     }} title='Edit' className='hover:cursor-pointer'> */}
-        <Popconfirm title="Sure to edit?" onConfirm={() => editRecord(form.getFieldValue('content'))}>
+
+        <Popconfirm title="Sure to edit?" okButtonProps={{style:{backgroundColor:colorPrimary}}} onConfirm={() => editRecord(form.getFieldValue('content'))}>
             <SaveTwoTone size={30}/>
           </Popconfirm>
     {/* </div> */}

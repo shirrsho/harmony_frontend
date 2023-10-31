@@ -1,7 +1,7 @@
 'use client'
 import React, { useState } from 'react';
 
-import { Button, Form, Input, Modal, Radio, UploadProps } from 'antd';
+import { Button, Form, Input, Modal, Radio, theme, UploadProps } from 'antd';
 import Dragger from 'antd/es/upload/Dragger';
 import { InboxOutlined } from '@ant-design/icons';
 import { useNotification } from '@/app/contexts/notification.context';
@@ -28,11 +28,13 @@ const CollectionCreateForm: React.FC<CollectionCreateFormProps> = ({
   onCreate,
   onCancel,
 }) => {
-  
+  const {
+    token: { colorPrimary, colorBgContainer },
+  } = theme.useToken();
   const [form] = Form.useForm();
-
+  
   const {raiseNotification} = useNotification()
-
+  
   const props: UploadProps = {
     name: 'file',
     multiple: false,
@@ -59,12 +61,13 @@ const CollectionCreateForm: React.FC<CollectionCreateFormProps> = ({
   
   return (
     <Modal
-      open={open}
-      title="Add requirements!"
-      okText="Create"
-      cancelText="Cancel"
-      onCancel={onCancel}
-      onOk={() => {
+    open={open}
+    title="Add requirements!"
+    okText="Create"
+    cancelText="Cancel"
+    onCancel={onCancel}
+    okButtonProps={{style:{backgroundColor:colorPrimary}}}
+    onOk={() => {
         form
           .validateFields()
           .then((values) => {
