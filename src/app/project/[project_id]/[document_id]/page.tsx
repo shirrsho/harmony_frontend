@@ -1,5 +1,5 @@
 'use client'
-import { Breadcrumb, Collapse, InputRef, Popover, Space, TableProps, Tag, Typography } from 'antd';
+import { Breadcrumb, Collapse, InputRef, Modal, Popover, Space, TableProps, Tag, Typography } from 'antd';
 import { Button, Card, FloatButton, Form, Input, Popconfirm, Table } from 'antd';
 import type { FormInstance } from 'antd/es/form';
 import React, { useContext, useEffect, useRef, useState } from 'react';
@@ -141,7 +141,7 @@ const App = ({ params } : { params : {document_id:string, project_id:string} }) 
   const handleChange: TableProps<Requirement>['onChange'] = (pagination, filters, sorter) => {
     console.log('Various parameters', pagination, filters, sorter);
     setFilteredInfo(filters);
-    // setSortedInfo(sorter as SorterResult<Requirement>);
+    setSortedInfo(sorter as SorterResult<Requirement>);
   };
 
   // const clearFilters = () => {
@@ -218,10 +218,12 @@ const App = ({ params } : { params : {document_id:string, project_id:string} }) 
       title: 'Requirement',
       dataIndex: 'content',
       key:'content',
-      width: '70%',
+      width: '85%',
       // editable: true,
       filteredValue: filteredInfo.content || null,
       ...getColumnSearchProps('content'),
+      sorter: (a:any, b:any) => a?.content?.toLowerCase().localeCompare(b?.content?.toLowerCase()),
+      sortOrder: sortedInfo.columnKey === 'content' ? sortedInfo.order : null,
       ellipsis: true,
       // onCell: (record:Requirement) => {
       //   return {
@@ -240,28 +242,28 @@ const App = ({ params } : { params : {document_id:string, project_id:string} }) 
         )
       }
     },
-    {
-      title: 'Status',
-      dataIndex: 'isSafe',
-      width: '15%',
-      // editable: false,
-      filters: [
-        { text: 'Safe', value: true },
-        { text: 'Unsafe', value: false },
-      ],
-      filteredValue: filteredInfo.isSafe || null,
-      onFilter: (value: any, record:Requirement) => record?.isSafe == value,
-      render: (_: any, record: Requirement) => {
-        return record?.isSafe == true ? (
-          <Tag>
-            Safe
-          </Tag>
-        ) : 
-        <Tag>
-          At Risk
-      </Tag>
-      }
-    },
+    // {
+    //   title: 'Status',
+    //   dataIndex: 'isSafe',
+    //   width: '15%',
+    //   // editable: false,
+    //   filters: [
+    //     { text: 'Safe', value: true },
+    //     { text: 'Unsafe', value: false },
+    //   ],
+    //   filteredValue: filteredInfo.isSafe || null,
+    //   onFilter: (value: any, record:Requirement) => record?.isSafe == value,
+    //   render: (_: any, record: Requirement) => {
+    //     return record?.isSafe == true ? (
+    //       <Tag>
+    //         Safe
+    //       </Tag>
+    //     ) : 
+    //     <Tag>
+    //       At Risk
+    //   </Tag>
+    //   }
+    // },
     {
       title: 'Operation',
       dataIndex: 'operation',
@@ -383,6 +385,7 @@ const App = ({ params } : { params : {document_id:string, project_id:string} }) 
             type="primary"
             style={{ right: 36 }}
             icon={<AppstoreAddOutlined />}
+            tooltip={"Add Requirement/s"}
             onClick={() => {
               setOpen(true);
             }}
@@ -392,8 +395,18 @@ const App = ({ params } : { params : {document_id:string, project_id:string} }) 
             type="primary"
             style={{ right: 36, bottom: 96 }}
             icon={<SearchOutlined />}
+            tooltip={"Find Document Conflicts"}
             onClick={() => {
-              calculateConflict()
+              Modal.confirm({
+                title: 'Are you sure?',
+                content: 'Finding conflicts will permanently delete the previous report. Make sure to export it!',
+                footer: (_, { CancelBtn }) => (
+                  <>
+                    <Button onClick={()=>calculateConflict()} className="text-red-600 border border-red-400 hover:bg-white ease-in-out">Find Conflicts</Button>
+                    <CancelBtn />
+                  </>
+                ),
+              });
               // .then( () => {
               //     raiseNotification("success", "Conflict calculation finished!");
               //     // router.push(`/project/${project_id}/${document_id}/conflict`);

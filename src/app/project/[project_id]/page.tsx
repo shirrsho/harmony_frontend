@@ -1,5 +1,5 @@
 'use client'
-import { Breadcrumb, InputRef, Space, TableProps, Tag, Typography } from 'antd';
+import { Breadcrumb, InputRef, Modal, Space, TableProps, Tag, Typography } from 'antd';
 import { Button, Card, FloatButton, Form, Input, Popconfirm, Table } from 'antd';
 import type { FormInstance } from 'antd/es/form';
 import React, { useContext, useEffect, useRef, useState } from 'react';
@@ -303,7 +303,7 @@ const App = ({ params } : { params : {project_id:string} }) => {
         return dataSource.length >= 1 ? (
           <span className='flex gap-3'>
           {/* <Popconfirm title="Sure to extract conflcits? Previous customization will be reset!" onConfirm={() => handleDelete(record.id)}> */}
-            <PlayCircleOutlined style={{color:'#222E3C'}} onClick={()=>router.push(`/project/${project_id}/${record.id}/conflict`)}/>
+            {/* <PlayCircleOutlined style={{color:'#222E3C'}} onClick={()=>router.push(`/project/${project_id}/${record.id}/conflict`)}/> */}
           {/* </Popconfirm> */}
           <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record.id)}>
             <DeleteOutlined style={{color:'red'}}/>
@@ -341,6 +341,7 @@ const App = ({ params } : { params : {project_id:string} }) => {
       {/* <Button onClick={handleAdd} type="primary" style={{ marginBottom: 16 }}>
         Add a row
       </Button> */}
+      <div className='flex p-6 bg-white' style={{alignItems: 'center', justifyContent:'space-between'}}>
         <Breadcrumb
           items={[
             {
@@ -369,8 +370,9 @@ const App = ({ params } : { params : {project_id:string} }) => {
               ),
             }
           ]}
-          className='p-6 bg-white'
         />
+        <Button onClick={()=>router.push(`/project/${project_id}/conflict`)}>Report</Button>
+        </div>
         <CollectionCreateForm
             project_id={project_id}
             open={open}
@@ -400,17 +402,29 @@ const App = ({ params } : { params : {project_id:string} }) => {
             type="primary"
             style={{ right: 36 }}
             icon={<AppstoreAddOutlined />}
+            tooltip={"Add Document"}
             onClick={() => {
               setOpen(true);
             }}
           />
-                    <FloatButton
+          <FloatButton
             shape="circle"
             type="primary"
             style={{ right: 36, bottom: 96 }}
             icon={<SearchOutlined />}
+            tooltip={"Find Project Conflicts"}
             onClick={() => {
-              calculateConflict()
+              Modal.confirm({
+                title: 'Are you sure?',
+                content: 'Finding conflicts will permanently delete the previous report. Make sure to export it!',
+                footer: (_, { CancelBtn }) => (
+                  <>
+                    <Button onClick={()=>calculateConflict()} className="text-red-600 border border-red-400 hover:bg-white ease-in-out">Find Conflicts</Button>
+                    <CancelBtn />
+                  </>
+                ),
+              });
+              // calculateConflict()
             //   .then( () => {
             //       raiseNotification("success", "Project Conflict calculation finished!");
             //       router.push(`/project/${project_id}/conflict`);
