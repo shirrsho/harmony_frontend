@@ -331,9 +331,10 @@ const changeStatus = (conflict_id:string, decision:string) => {
       filters: [
         { text: 'Safe', value: "No" },
         { text: 'Conflicts', value: "Yes" },
+        { text: 'Candidate', value: "Maybe" },
       ],
       filteredValue: filteredInfo.decision || null,
-      onFilter: (value: any, record:Conflict) => record?.decision == value,
+      onFilter: (value: any, record:Conflict) => value=='Maybe' ? record.decision == 'No' && record.cos>=0.2 && record.pos_overlap_ratio>=0.1 : record?.decision == value,
       render: (_: any, record: Conflict) => {
         return dataSource.length >= 1 ? (
           <span className='flex gap-3'>
@@ -342,8 +343,10 @@ const changeStatus = (conflict_id:string, decision:string) => {
           </Popconfirm> */}
           {record.decision=="Yes"?
           <Tag color='red' onClick={()=>changeStatus(record?.id,"No")} title={"Conflicts! Mark as Safe?"} className="hover:bg-red-800 hover:text-white ease-in-out">Conflicts</Tag>
-          :
-        <Tag color='green' onClick={()=>changeStatus(record?.id,"Yes")} title={"Safe! Mark as Conflicting?"} className="hover:bg-green-800 hover:text-white ease-in-out">Safe</Tag>}
+            : record.cos>=0.2 && record.pos_overlap_ratio>=0.1?
+          <Tag color='yellow' onClick={()=>changeStatus(record?.id,"Yes")} title={"Conflict candidate! Mark as Conflicting?"} className="hover:bg-yellow-800 hover:text-white ease-in-out">At Risk</Tag>
+            :
+            <Tag color='green' onClick={()=>changeStatus(record?.id,"Yes")} title={"Safe! Mark as Conflicting?"} className="hover:bg-green-800 hover:text-white ease-in-out">Safe</Tag>}
           
           </span>
         ) : <></>
