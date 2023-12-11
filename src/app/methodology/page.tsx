@@ -2,7 +2,6 @@
 import React from "react";
 import { Layout, theme } from "antd";
 import Link from "next/link";
-import CustomFooter from "./components/Footer";
 
 const { Header, Content, Footer } = Layout;
 
@@ -16,8 +15,7 @@ const Home: React.FC = () => {
       <Content style={{ padding: "0.50px" }}>
         <Layout style={{ padding: "2.4px", background: colorBgContainer }}>
           <Content style={{ padding: "2.4px", minHeight: 280, display:'flex', alignItems:'center', justifyContent:'center' }}>
-            {/* <Link href={'/project'}>Projects</Link> */}
-            <img src="analysis.png"/>
+            <img src="model.png"/>
           </Content>
         </Layout>
       </Content>

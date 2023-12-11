@@ -38,7 +38,7 @@ import './globals.css'
   }
   
   const items: MenuItem[] = [
-    getItem('Annalyis', '1', <PieChartOutlined />),
+    getItem('Analysis', '1', <PieChartOutlined />),
     getItem('Projects', '2', <DesktopOutlined />),
     // getItem('User', 'sub1', <UserOutlined />, [
     //   getItem('Tom', '3'),
@@ -47,7 +47,7 @@ import './globals.css'
     // ]),
     getItem('Contribute', '3', <TeamOutlined />),
     getItem('Methodology', '4', <FileSyncOutlined />),
-    getItem('Sponsor', '5', <SmileOutlined />),
+    // getItem('Sponsor', '5', <SmileOutlined />),
   ];
   
   const App = ({ children }: { children: React.ReactNode }) => {
@@ -61,6 +61,9 @@ import './globals.css'
     const handleMenu = (e:any) => {
       console.log(e);
       
+      // if(e == 5) router.push("/sponsor")
+      if(e == 4) router.push("/methodology")
+      if(e == 3) router.push("/contribute")
       if(e == 2) router.push("/project")
       if(e == 1) router.push('/')
     }
@@ -85,7 +88,7 @@ import './globals.css'
         }}
         style={{ marginTop: "1vh", paddingTop:'14vh' }} >
           {/* <div className="demo-logo-vertical" >Logo</div> */}
-          <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" items={items} onClick={(e)=>handleMenu(e.key)} style={{marginBottom:'45vh'}}/>
+          <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" items={items} onClick={(e)=>handleMenu(e.key)}/>
           <CustomFooter/>
         </Sider>
         <Layout>
